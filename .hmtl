@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<script>
+function validaCampo(evt) {
+ evt.preventDefault();
+ 
+	var nome = document.getElementById('nome').value;
+	var senha1 = document.getElementById('senha1').value;
+	var senha2 = document.getElementById('senha2').value;
+	var CPF = document.getElementById('CPF').value;
+	var email = document.getElementById('email').value;
+ 
+	var erro = false 
+	var mensagens = [];
+	
+ 
+if (nome == "") {
+mensagens.push("Por favor, preencha o campo com seu nome");
+}
+if (nome.indexOf(" ") == -1){
+	alert("Preencha o nome completo")
+	erro = true
+}
+
+
+if (CPF == "") {
+mensagens.push("Por favor,preencha o campo com o número de seu CPF"); 
+}
+var valido = TestaCPF(CPF);
+ if (valido == false){
+	mensagens.push('CPF Inválido')
+}
+
+
+if (email == "") {
+mensagens.push("Por favor,preencha o campo com seu E-mail"); 
+}
+
+if (senha1 ==  ''){
+	mensagens.push('Insira uma senha');
+ }else{
+ if (senha1.length < 8){
+	mensagens.push('Sua senha deve conter mais que 8 ');
+		}
+ if ((senha1.match(/[A-Z]/g) || []).length < 3){
+	mensagens.push('Sua senha deve conter mais que 3 caracteres MAIUSCULOS');
+		}
+ if ((senha1.match(/{0-9}/g) || []).lenght < 2){
+	mensagens.push('Sua senha deve conter mais que 2 números');
+		}
+ if ((senha1.match(/[#\.*'_\$\@]/g) || []).lenght < 1){
+	mensagens.push('Sua senha deve conter mais que 1 caracter especial');
+		}
+	}
+
+
+if (senha2 == "") {
+mensagens.push("Por favor,preencha o campo com os mesmos caracteres da senha digitada acima"); 
+}
+
+
+if (senha1 != senha2){
+	alert("Suas senha estão diferentes")
+	erro = true
+}
+
+
+if (mensagens.length){
+	var notifica = "Seu formulário possui erros:\n\n";
+ 
+	for(var i=0; i <mensagens.length; i++){
+	var m = mensagens[i];
+  notifica += '- ' + m;
+	if(i == mensagens.length - 1){
+  notifica += '.';
+  }
+	else{
+  notifica += ';\n';
+  }
+}
+
+alert(notifica);
+
+	}else
+		alert("Cadastro efetuado com sucesso");
+}
+
+function TestaCPF(strCPF) {
+    var Soma;
+    var Resto;
+    Soma = 0;
+    if (strCPF == "00000000000") {
+        return false;
+    }
+
+    for (i = 1; i <= 9; i++) {
+        Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (11 - i);
+    }
+    Resto = (Soma * 10) % 11;
+
+    if ((Resto == 10) || (Resto == 11)) {
+        Resto = 0;
+    }
+    if (Resto != parseInt(strCPF.substring(9, 10))) {
+        return false;
+    }
+
+    Soma = 0;
+    for (i = 1; i <= 10; i++) {
+        Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (12 - i);
+    }
+    Resto = (Soma * 10) % 11;
+
+    if ((Resto == 10) || (Resto == 11)) {
+        Resto = 0;
+    }
+    if (Resto != parseInt(strCPF.substring(10, 11))) {
+        return false;
+    }
+    return true;
+}
+
+</script>
+<title>Cadastro de Cliente
+</title>
+</head>
+<body>
+<h1>Cadastro de usuário</h1>
+	<form action="#" method="post" id="formularioCadastro" onsubmit="validaCampo(event)">
+	
+<label for="nome">Nome do Cliente:</label>
+<input name="nome" id="nome" type="text"><br><br>
+
+<label for="CPF">CPF:</label>
+<input name="CPF" id="CPF" type="text"><br><br>
+
+<label for="email">Email:</label>
+<input name="email" id="email" type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"><br><br>
+
+<label for="senha">Senha:</label>
+<input name="senha" id="senha1" type="password"><br><br>
+
+<label for="senhaConfirmacao">Confirme sua senha:</label>
+<input name="senhaConfirmacao" id="senha2" type="password"><br><br>
+
+<input type="submit" value="Cadastrar"/>
+
+	</form>
+</body>
+</hmtl>
